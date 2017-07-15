@@ -1,16 +1,15 @@
 package gamePanel;
 
+import Events.MyEvents;
 import core.Core;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import javax.swing.*;
+import java.awt.event.*;
 
 /**
  * Created by sarb on 7/13/17.
  */
-public class GamePanelMover implements KeyListener,MouseMotionListener
+public class GamePanelMover extends JLabel implements KeyListener,MouseMotionListener,MouseWheelListener
 {
     private Core core;
 
@@ -28,24 +27,23 @@ public class GamePanelMover implements KeyListener,MouseMotionListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-        System.out.println("there");
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_UP:
                 if ( core.getGameFrame().getGamePanel().getyRoot() > 1 )
-                    core.getGameFrame().getGamePanel().setyRoot(core.getGameFrame().getGamePanel().getyRoot() -1);
+                    core.getGameFrame().getGamePanel().dispatchEvent(new ComponentEvent(this, MyEvents.CAMERA_UP));
                 break;
             case KeyEvent.VK_DOWN:
                 if ( core.getGameFrame().getGamePanel().getyRoot() < core.getMap().getHeightTiles() - core.getGameFrame().getGamePanel().getVerticalTiles())
-                    core.getGameFrame().getGamePanel().setyRoot(core.getGameFrame().getGamePanel().getyRoot() +1);
+                    core.getGameFrame().getGamePanel().dispatchEvent(new ComponentEvent(this, MyEvents.CAMERA_DOWN));
                 break;
             case KeyEvent.VK_RIGHT:
                 if( core.getGameFrame().getGamePanel().getxRoot() < core.getMap().getWidthTiles() - core.getGameFrame().getGamePanel().getHorizontalTiles())
-                    core.getGameFrame().getGamePanel().setxRoot(core.getGameFrame().getGamePanel().getxRoot() +1);
+                    core.getGameFrame().getGamePanel().dispatchEvent(new ComponentEvent(this, MyEvents.CAMERA_RIGHT));
                 break;
             case KeyEvent.VK_LEFT:
                 if ( core.getGameFrame().getGamePanel().getxRoot() > 1 )
-                    core.getGameFrame().getGamePanel().setxRoot(core.getGameFrame().getGamePanel().getxRoot() -1);
+                    core.getGameFrame().getGamePanel().dispatchEvent(new ComponentEvent(this, MyEvents.CAMERA_LEFT));
                 break;
         }
 
@@ -68,5 +66,14 @@ public class GamePanelMover implements KeyListener,MouseMotionListener
     public void mouseMoved(MouseEvent e)
     {
 
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        if (e.getModifiers() == 1)
+            return;
+
+        core.getGameFrame().getGamePanel().dispatchEvent(new ChangeTileSizeEvent(this,MyEvents.CHANGE_TILE_SIZE,(int) e.getPreciseWheelRotation()*4));
     }
 }
