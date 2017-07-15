@@ -1,8 +1,6 @@
 package core;
 
 import gameFrame.GameFrame;
-import gamePanel.GamePanel;
-import gamePanel.GamePanelMover;
 import map.map.Map;
 
 import javax.swing.*;
@@ -12,8 +10,8 @@ import javax.swing.*;
  */
 public class Core extends JLabel
 {
-    Map map;
-    GameFrame gameFrame;
+    private Map map;
+    private GameFrame gameFrame;
     private boolean coordinated = true;
 
     public Core()
