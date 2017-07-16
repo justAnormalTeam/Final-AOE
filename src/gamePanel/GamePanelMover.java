@@ -5,6 +5,7 @@ import core.Core;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 /**
  * Created by sarb on 7/13/17.
@@ -44,6 +45,13 @@ public class GamePanelMover extends JLabel implements KeyListener,MouseMotionLis
             case KeyEvent.VK_LEFT:
                 if ( core.getGameFrame().getGamePanel().getxRoot() > 1 )
                     core.getGameFrame().getGamePanel().dispatchEvent(new ComponentEvent(this, MyEvents.CAMERA_LEFT));
+                break;
+            case KeyEvent.VK_L:
+                try {
+                    core.getSaveAndLoad().load();
+                } catch (IOException | ClassNotFoundException e1) {
+                    e1.printStackTrace();
+                }
                 break;
         }
 

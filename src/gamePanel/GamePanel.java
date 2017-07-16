@@ -6,8 +6,6 @@ import core.Core;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Created by sarb on 7/13/17.
@@ -27,7 +25,9 @@ public class GamePanel extends JPanel
     private int tileSize;
     private int TILE_MIN_SIZE;
     private int TILE_MAX_SIZE;
+
     private int cotang;
+
     {
         xRoot = 1;
         yRoot = 1;
@@ -36,13 +36,12 @@ public class GamePanel extends JPanel
         TILE_MAX_SIZE = 200;
         TILE_MIN_SIZE = 50;
     }
-
     private Timer timer;
+
     {
         timer = new Timer(30, e-> repaint());
         timer.start();
     }
-
     public GamePanel(Core core, int width, int height)
     {
         this.core = core;
@@ -94,7 +93,6 @@ public class GamePanel extends JPanel
         }
     }
 
-
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -103,8 +101,14 @@ public class GamePanel extends JPanel
         for (int j = 0; j < core.getMap().getHeightTiles(); j++)
             for (int i = 0; i < core.getMap().getWidthTiles(); i++)
                 if (i > xRoot - 2 && j > yRoot - 2 && i < xRoot + getHorizontalTiles()
-                        && j < yRoot + getVerticalTiles())
+                        && j < yRoot + getVerticalTiles()) {
                     core.getMap().getTile(i, j).draw(g2, xRoot, yRoot, tileSize, cotang);
+                    if( core.getMap().getTile(i,j).getFiller()!= null) {
+                        int relX = ( (i - xRoot) * tileSize ) + tileSize/2  + (j%2)*tileSize/2 ;
+                        int relY = ((j - yRoot) * tileSize) / (2* cotang) - (int)((tileSize/2)*core.getMap().getTile(i,j).getTerrainType().getHeight());
+                        g2.drawImage(core.getMap().getTile(i, j).getFiller().getImageIcon().getImage(), relX - tileSize / 2, relY - tileSize / 2, tileSize, tileSize, null);
+                    }
+                }
 
         if(core.getGameFrame().getSelector().getRectangle() != null)
         {
@@ -112,6 +116,7 @@ public class GamePanel extends JPanel
             g2.draw(core.getGameFrame().getSelector().getRectangle());
         }
     }
+
 
     public int getVSize()
     {
@@ -156,5 +161,13 @@ public class GamePanel extends JPanel
     public void setyRoot(int yRoot)
     {
         this.yRoot = yRoot;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public int getCotang() {
+        return cotang;
     }
 }

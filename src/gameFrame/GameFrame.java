@@ -1,5 +1,7 @@
 package gameFrame;
 
+import com.apple.eawt.Application;
+import com.apple.eawt.FullScreenUtilities;
 import core.Core;
 import gamePanel.GamePanel;
 import gamePanel.Selector;
@@ -20,6 +22,7 @@ public class GameFrame extends JFrame
     public GameFrame(Core core, String title, int width, int height) throws HeadlessException
     {
         super(title);
+        setFullScreen(this);
 
         this.core = core;
 
@@ -35,6 +38,16 @@ public class GameFrame extends JFrame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
+    }
+
+    private void setFullScreen(JFrame myFrame)
+    {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        this.setSize(new Dimension(width,height));
+        FullScreenUtilities.setWindowCanFullScreen(myFrame,true);
+        Application.getApplication().requestToggleFullScreen(myFrame);
     }
 
     public Selector getSelector()

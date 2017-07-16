@@ -2,6 +2,7 @@ package core;
 
 import gameFrame.GameFrame;
 import map.map.Map;
+import saving.SaveAndLoad;
 
 import javax.swing.*;
 
@@ -12,12 +13,15 @@ public class Core extends JLabel
 {
     private Map map;
     private GameFrame gameFrame;
+    private SaveAndLoad saveAndLoad;
     private boolean coordinated = true;
+
 
     public Core()
     {
         map = new Map(this,50,100);
         gameFrame = new GameFrame(this,"AOE",1000,600);
+        saveAndLoad = new SaveAndLoad(this);
     }
 
     public boolean isCoordinated()
@@ -38,5 +42,9 @@ public class Core extends JLabel
     public Map getMap()
     {
         return map;
+    }
+
+    public SaveAndLoad getSaveAndLoad() {
+        return saveAndLoad;
     }
 }

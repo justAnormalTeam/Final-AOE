@@ -34,6 +34,24 @@ public enum ResourceType
         this.amount = amount;
     }
 
+    public static ResourceType getType(int number){
+            switch (number){
+                case 1:
+                    return TREE;
+                case 2:
+                    return PALM;
+                case 3:
+                    return DEEP_FISH;
+                case 4:
+                    return SHALLOW_FISH;
+                case 5:
+                    return GOLD;
+                case 6:
+                    return SILVER;
+                default:
+                    return TREE;
+            }
+    }
     public int getDifferentType()
     {
         return differentType;

@@ -3,6 +3,7 @@ package map.resource;
 
 import Utils.ImageReader;
 import core.Core;
+import interFaces.Observable;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.Random;
 /**
  * Created by sarb on 6/6/17.
  */
-public class Resource extends JLabel implements  Serializable
+public class Resource extends JLabel implements  Serializable, Observable
 {
     Core core;
 
@@ -47,4 +48,8 @@ public class Resource extends JLabel implements  Serializable
         return y;
     }
 
+    @Override
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
 }

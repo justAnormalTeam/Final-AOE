@@ -1,6 +1,10 @@
 package gamePanel;
 
+import Events.MyEvents;
 import core.Core;
+import map.building.Building;
+import map.building.BuildingSelectEvent;
+import map.building.BuildingType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +37,14 @@ public class Selector extends JLabel implements MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e)
     {
         startPoint = e.getPoint();
+        int x = e.getX() / core.getGameFrame().getGamePanel().getTileSize();
+        int y = (e.getY() * 2 * core.getGameFrame().getGamePanel().getCotang()) / core.getGameFrame().getGamePanel().getTileSize();
+
+        int xtile = core.getGameFrame().getGamePanel().getxRoot() + x;
+        int ytile = core.getGameFrame().getGamePanel().getyRoot() + y;
+        if (SwingUtilities.isLeftMouseButton(e) &&core.getMap().getTile(xtile,ytile).getFiller() instanceof Building && ((Building) core.getMap().getTile(xtile,ytile).getFiller()).getBuildingType() == BuildingType.BUILDING1 ){
+            core.getMap().dispatchEvent(new BuildingSelectEvent(this, MyEvents.BUILDING1_SELECT,xtile,ytile));
+    }
     }
 
     @Override

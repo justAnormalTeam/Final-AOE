@@ -1,12 +1,19 @@
 package map.map;
 
+import Events.MyEvents;
+import building_resource_panels.WorkerPanel;
 import core.Core;
 import interFaces.Mobile;
 import interFaces.Observable;
+import map.building.Building;
+import map.building.BuildingType;
+import map.resource.Resource;
+import map.resource.ResourceType;
 import map.terrain.TerrainType;
 import map.terrain.Tile;
 
 import javax.swing.*;
+import java.awt.event.ComponentEvent;
 import java.io.Serializable;
 import java.util.Vector;
 
@@ -60,6 +67,36 @@ public class Map extends JLabel implements Serializable
     public void addMobile(Mobile mobile)
     {
         mobiles.add(mobile);
+    }
+
+    @Override
+    protected synchronized void processComponentEvent(ComponentEvent e)
+    {
+        super.processComponentEvent(e);
+
+        switch (e.getID())
+        {
+            case MyEvents.LOAD:
+                for (int i = 0 ; i < widthTiles ; i ++) {
+                    for (int j = 0; j < heightTiles; j++) {
+                        tiles[i][j] = new Tile(core, (TerrainType.getTerrain(core.getSaveAndLoad().getMapEditorSave().terrainTypes[i][j])), i, j);
+                        if(core.getSaveAndLoad().getMapEditorSave().buildingTypes[i][j] != 0)
+                            tiles[i][j].setFiller(new Building(core,BuildingType.getType(core.getSaveAndLoad().getMapEditorSave().buildingTypes[i][j]),i,j));
+                        if(core.getSaveAndLoad().getMapEditorSave().resourceTypes[i][j] != 0)
+                            tiles[i][j].setFiller(new Resource(core,ResourceType.getType(core.getSaveAndLoad().getMapEditorSave().resourceTypes[i][j]),i,j));
+                    }
+                }
+                    break;
+            case MyEvents.BUILDING1_SELECT:
+                WorkerPanel workerPanel = new WorkerPanel(350,100,core.getGameFrame().getGamePanel().getxRoot(),core.getGameFrame().getGamePanel().getyRoot(),1000,3000,"WarHouse",core);
+                core.getGameFrame().add(workerPanel);
+                break;
+                case MyEvents.UPDATE:
+                    updateAll();
+                    break;
+            default:
+                System.out.println( "Map get wrong id" );
+        }
     }
 
     public Vector<Mobile> getMobiles()
