@@ -4,6 +4,7 @@ import gameFrame.GameFrame;
 import gamePanel.GamePanel;
 import gamePanel.GamePanelMover;
 import map.map.Map;
+import menuScreen.WellcomeFrame;
 
 import javax.swing.*;
 
@@ -12,14 +13,19 @@ import javax.swing.*;
  */
 public class Core extends JLabel
 {
-    Map map;
-    GameFrame gameFrame;
+    private Map map;
+    private GameFrame gameFrame;
     private boolean coordinated = true;
+    private WellcomeFrame wellcomeFrame;
 
     public Core()
     {
         map = new Map(this,50,100);
-        gameFrame = new GameFrame(this,"AOE",1000,600);
+        this.wellcomeFrame = new WellcomeFrame(this);
+    }
+
+    public void setGameFrame(GameFrame gameFrame) {
+        this.gameFrame = gameFrame;
     }
 
     public boolean isCoordinated()
